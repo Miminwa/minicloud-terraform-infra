@@ -71,7 +71,7 @@ jobs:
       #     sudo mv ./kubectl /usr/local/bin/kubectl
 
       # - name: 'authenticate to EKS Cluster'
-      #   run: aws eks update-kubeconfig --name ${{ vars.EKS_CLUSTER_NAME }} --region ${{ secrets.AWS_REGION }}
+      #   run: aws eks update-kubeconfig --name eks-cluster --region ${{ secrets.AWS_REGION }}
 
       # - name: 'Install helm'
       #   run: |

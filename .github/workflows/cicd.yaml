@@ -61,58 +61,58 @@ jobs:
       - name: Terraform Plan
         run: terraform plan 
 
-      - name: Terraform Apply.
-        run: terraform apply -auto-approve 
+      # - name: Terraform Apply.
+      #   run: terraform apply -auto-approve 
 
-      - name: 'install kubectl'
-        run: |
-          curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
-          chmod +x ./kubectl
-          sudo mv ./kubectl /usr/local/bin/kubectl
+      # - name: 'install kubectl'
+      #   run: |
+      #     curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+      #     chmod +x ./kubectl
+      #     sudo mv ./kubectl /usr/local/bin/kubectl
 
-      - name: 'authenticate to EKS Cluster'
-        run: aws eks update-kubeconfig --name ${{ vars.EKS_CLUSTER_NAME }} --region us-east-1
+      # - name: 'authenticate to EKS Cluster'
+      #   run: aws eks update-kubeconfig --name ${{ vars.EKS_CLUSTER_NAME }} --region us-east-1
 
-      - name: 'Install helm'
-        run: |
-                 curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
-                 chmod 700 get_helm.sh ./get_helm.sh
-      - name: 'Create Datadog API key secret'
-        run: |
-          kubectl create secret generic datadog-secret --from-literal api-key=${{ secrets.DD_API_KEY }}
+      # - name: 'Install helm'
+      #   run: |
+      #            curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+      #            chmod 700 get_helm.sh ./get_helm.sh
+      # - name: 'Create Datadog API key secret'
+      #   run: |
+      #     kubectl create secret generic datadog-secret --from-literal api-key=${{ secrets.DD_API_KEY }}
  
-      - name: 'create datadog-values.yaml'
-        run: |
-          echo "datadog:" > module-eks/datadog-values.yaml
-          echo "  site: \"datadoghq.com\"" >> module-eks/datadog-values.yaml
-          echo "  apiKeyExistingSecret: \"datadog-secret\"" >> module-eks/datadog-values.yaml
-          echo "  apm:" >> module-eks/datadog-values.yaml
-          echo "    enabled: true" >> module-eks/datadog-values.yaml
-          echo "  processAgent:" >> module-eks/datadog-values.yaml
-          echo "    enabled: true" >> module-eks/datadog-values.yaml
-          echo "  logs:" >> module-eks/datadog-values.yaml
-          echo "    enabled: true" >> module-eks/datadog-values.yaml
-          echo "    containerCollectAll: true" >> module-eks/datadog-values.yaml
-          echo "  kubeStateMetrics:" >> module-eks/datadog-values.yaml
-          echo "    enabled: true" >> module-eks/datadog-values.yaml
-          echo "  clusterAgent:" >> module-eks/datadog-values.yaml
-          echo "    enabled: true" >> module-eks/datadog-values.yaml
-          echo "  rbac:" >> module-eks/datadog-values.yaml
-          echo "    create: true" >> module-eks/datadog-values.yaml
-          echo "    serviceAccountName: datadog-agent" >> module-eks/datadog-values.yaml
+      # - name: 'create datadog-values.yaml'
+      #   run: |
+      #     echo "datadog:" > module-eks/datadog-values.yaml
+      #     echo "  site: \"datadoghq.com\"" >> module-eks/datadog-values.yaml
+      #     echo "  apiKeyExistingSecret: \"datadog-secret\"" >> module-eks/datadog-values.yaml
+      #     echo "  apm:" >> module-eks/datadog-values.yaml
+      #     echo "    enabled: true" >> module-eks/datadog-values.yaml
+      #     echo "  processAgent:" >> module-eks/datadog-values.yaml
+      #     echo "    enabled: true" >> module-eks/datadog-values.yaml
+      #     echo "  logs:" >> module-eks/datadog-values.yaml
+      #     echo "    enabled: true" >> module-eks/datadog-values.yaml
+      #     echo "    containerCollectAll: true" >> module-eks/datadog-values.yaml
+      #     echo "  kubeStateMetrics:" >> module-eks/datadog-values.yaml
+      #     echo "    enabled: true" >> module-eks/datadog-values.yaml
+      #     echo "  clusterAgent:" >> module-eks/datadog-values.yaml
+      #     echo "    enabled: true" >> module-eks/datadog-values.yaml
+      #     echo "  rbac:" >> module-eks/datadog-values.yaml
+      #     echo "    create: true" >> module-eks/datadog-values.yaml
+      #     echo "    serviceAccountName: datadog-agent" >> module-eks/datadog-values.yaml
 
-      -  name: 'Install Datadog Agent in EKS'
-         run: |
-           helm repo add datadog https://helm.datadoghq.com
-           helm repo update
-           helm install datadog-agent -f datadog-values.yaml datadog/datadog
+      # -  name: 'Install Datadog Agent in EKS'
+      #    run: |
+      #      helm repo add datadog https://helm.datadoghq.com
+      #      helm repo update
+      #      helm install datadog-agent -f datadog-values.yaml datadog/datadog
 
 
-      - name: 'Deploying the ClusterIssuer to EKS'
-        run: kubectl apply -f ClusterIssuer.yaml
+      # - name: 'Deploying the ClusterIssuer to EKS'
+      #   run: kubectl apply -f ClusterIssuer.yaml
 
-      - name: 'Deploying argocd ingress rule to EKS'
-        run: kubectl apply -f ingress-argocd.yaml -n argocd
+      # - name: 'Deploying argocd ingress rule to EKS'
+      #   run: kubectl apply -f ingress-argocd.yaml -n argocd
 
-      # - name: Terraform Destroy
-      #   run: terraform destroy -auto-approve 
+      - name: Terraform Destroy
+        run: terraform destroy -auto-approve

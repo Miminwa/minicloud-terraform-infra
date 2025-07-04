@@ -94,22 +94,3 @@ resource "helm_release" "argocd" {
 
   depends_on = [helm_release.nginx_ingress, helm_release.cert_manager]
 }
-
-# NEW: Datadog Helm Release
-resource "helm_release" "datadog_agent" {
-  name             = "datadog"
-  repository       = "https://helm.datadoghq.com" # Datadog Helm repository
-  chart            = "datadog"
-  version          = "3.1.0" # Use a recent stable version, check Datadog Helm chart releases
-  namespace        = "datadog"
-  create_namespace = true
-  provider         = helm.eks
-
-  # Use values file for configuration, which will reference the Kubernetes Secret
-  values = [file("${path.module}/datadog-values.yaml")]
-
-  # Ensure Datadog is installed after the EKS cluster is ready
-  depends_on = [
-    null_resource.wait_for_eks_ready
-  ]
-}

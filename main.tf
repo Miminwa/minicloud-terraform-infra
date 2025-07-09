@@ -55,28 +55,28 @@ module "rds-mysql-deployment" {
     aws_security_group_ids = module.vpc-deployment.aws_security_group_ids
 }
 
-# to reach the EC2 instance running NGINX.
+# # to reach the EC2 instance running NGINX.
 
-resource "aws_security_group_rule" "allow_git_runner_http" {
-  # The ID of the security group attached to your 'github-runner-private' EC2 instance
-  security_group_id = "sg-0a628810f04919079"
-  type              = "ingress"
-  from_port         = 80
-  to_port           = 80
-  protocol          = "tcp"
-  # The public IP address of your Git runner, followed by /32 for a single host
-  cidr_blocks       = ["3.83.140.116/32"]
-  description       = "Allow HTTP from Git Runner"
-}
+# resource "aws_security_group_rule" "allow_git_runner_http" {
+#   # The ID of the security group attached to your 'github-runner-private' EC2 instance
+#   security_group_id = "sg-0a628810f04919079"
+#   type              = "ingress"
+#   from_port         = 80
+#   to_port           = 80
+#   protocol          = "tcp"
+#   # The public IP address of your Git runner, followed by /32 for a single host
+#   cidr_blocks       = ["3.83.140.116/32"]
+#   description       = "Allow HTTP from Git Runner"
+# }
 
-resource "aws_security_group_rule" "allow_git_runner_https" {
-  # The ID of the security group attached to your 'github-runner-private' EC2 instance
-  security_group_id = "sg-0a628810f04919079"
-  type              = "ingress"
-  from_port         = 443
-  to_port           = 443
-  protocol          = "tcp"
-  # The public IP address of your Git runner, followed by /32 for a single host
-  cidr_blocks       = ["3.83.140.116/32"]
-  description       = "Allow HTTPS from Git Runner"
-}
+# resource "aws_security_group_rule" "allow_git_runner_https" {
+#   # The ID of the security group attached to your 'github-runner-private' EC2 instance
+#   security_group_id = "sg-0a628810f04919079"
+#   type              = "ingress"
+#   from_port         = 443
+#   to_port           = 443
+#   protocol          = "tcp"
+#   # The public IP address of your Git runner, followed by /32 for a single host
+#   cidr_blocks       = ["3.83.140.116/32"]
+#   description       = "Allow HTTPS from Git Runner"
+# }

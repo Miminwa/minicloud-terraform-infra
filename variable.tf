@@ -80,13 +80,13 @@ variable "label_one" {
 variable "zone_name" {
   description = "Name of the DNS zone"
   type        = string
-  default     = "example.com"
+  default     = "miniclouddevop.online"
 }
 
 variable "domain-name" {
   description = "Domain name to be created"
   type        = string
-  default     = "myapp.example.com"
+  default     = "miniclouddevop.online"
 }
 
 # variable "namecheap_api_user" {
@@ -99,15 +99,16 @@ variable "domain-name" {
 #   type        = string
 #   default     = "a3ca57241b794d44b0fc3387ca9b62a9"
 # }
+
 # variable "namecheap_username" {
 #   description = "Namecheap username"
 #   type        = string
-#   default     = "smartobi"
+#   default     = "chimamanda24"
 # }
 # variable "namecheap_client_ip" {
 #   description = "Client IP for Namecheap API access"
 #   type        = string
-#   default     = "3.101.24.8" # Replace with your actual client IP
+#   default     = "3.83.140.116" # Replace with your actual client IP
 # }
 
 #===========

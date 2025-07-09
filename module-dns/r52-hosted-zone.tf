@@ -1,13 +1,15 @@
 # Data source to reference your existing Route 53 hosted zone
 data "aws_route53_zone" "existing_r53_zone" {
-  name         = var.domain-name # Use the exact domain name of your manually created zone
+  # IMPORTANT: Ensure 'domain_name' matches the variable name in your variables.tf
+  name         = var.domain_name # Use the exact domain name of your manually created zone
   private_zone = false           # Set to true if it's a private hosted zone
 }
 
 resource "aws_route53_record" "bank_cname" {
   # Reference the zone_id from the data source
   zone_id = data.aws_route53_zone.existing_r53_zone.zone_id
-  name    = "bank.${var.domain-name}"
+  # IMPORTANT: Ensure 'domain_name' matches the variable name in your variables.tf
+  name    = "bank.${var.domain_name}"
   type    = "CNAME"
   ttl     = 300
   records = [var.nginx_lb_ip]
@@ -16,7 +18,8 @@ resource "aws_route53_record" "bank_cname" {
 resource "aws_route53_record" "bankapi_cname" {
   # Reference the zone_id from the data source
   zone_id = data.aws_route53_zone.existing_r53_zone.zone_id
-  name    = "bankapi.${var.domain-name}"
+  # IMPORTANT: Ensure 'domain_name' matches the variable name in your variables.tf
+  name    = "bankapi.${var.domain_name}"
   type    = "CNAME"
   ttl     = 300
   records = [var.nginx_lb_ip]
@@ -25,7 +28,8 @@ resource "aws_route53_record" "bankapi_cname" {
 resource "aws_route53_record" "argocd_cname" {
   # Reference the zone_id from the data source
   zone_id = data.aws_route53_zone.existing_r53_zone.zone_id
-  name    = "argocd.${var.domain-name}"
+  # IMPORTANT: Ensure 'domain_name' matches the variable name in your variables.tf
+  name    = "argocd.${var.domain_name}"
   type    = "CNAME"
   ttl     = 300
   records = [var.nginx_lb_ip]
@@ -83,6 +87,7 @@ resource "aws_route53_record" "argocd_cname" {
 #         Environment = var.environment
 #     }
 # }
+
 # resource "aws_route53_record" "name" {
 #     zone_id = aws_route53_zone.r53_zone.zone_id
 #     name    = "bank.${var.domain-name}" # Use a subdomain for CNAME

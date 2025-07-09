@@ -11,10 +11,10 @@ spec:
   ingressClassName: external-nginx
   tls:
   - hosts:
-    - argocd.cloudwitches.online
-    secretName: argocd-miniclouddevops-online
+    - argocd.miniclouddevop.online
+    secretName: argocd-miniclouddevop-online
   rules:
-  - host: argocd.miniclouddevops.online
+  - host: argocd.miniclouddevop.online
     http:
       paths:
       - path: /

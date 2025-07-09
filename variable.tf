@@ -77,13 +77,13 @@ variable "label_one" {
   default     = "system"
 }
 
-# variable "zone_name" {
-#   description = "Name of the DNS zone"
-#   type        = string
-#   default     = "miniclouddevop.online"
-# }
+variable "zone_name" {
+  description = "Name of the DNS zone"
+  type        = string
+  default     = "miniclouddevop.online"
+}
 
-variable "domain-name" {
+variable "domain_name" {
   description = "Domain name to be created"
   type        = string
   default     = "miniclouddevop.online"

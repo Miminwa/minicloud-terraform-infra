@@ -93,7 +93,7 @@ variable "repository_name" {
   
 }
 
-variable "domain-name" {
+variable "domain_name" {
   description = "Domain name to be created"
   type        = string
   default     = "miniclouddevop.online"

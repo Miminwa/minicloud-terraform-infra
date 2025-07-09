@@ -1,41 +1,74 @@
-# modules/dns/main.tf (Updated for ALIAS Records)
-
-resource "aws_route53_record" "bank_app" { # Renamed resource for clarity (optional, but good practice)
-    zone_id = data.aws_route53_zone.r53_zone.zone_id
-    name    = "bank.${var.domain_name}"
-    type    = "A" # <--- Changed from "CNAME" to "A" (for ALIAS)
-
-    alias {
-      name                   = var.nginx_lb_dns_name       # <--- New variable for LB DNS Name
-      zone_id                = var.nginx_lb_hosted_zone_id # <--- New variable for LB Hosted Zone ID
-      evaluate_target_health = true                        # Recommended for health checks
-    }
-    # Removed 'ttl' and 'records' because they are not used with 'alias' blocks
+# Data source to reference your existing Route 53 hosted zone
+data "aws_route53_zone" "existing_r53_zone" {
+  name         = var.domain-name # Use the exact domain name of your manually created zone
+  private_zone = false           # Set to true if it's a private hosted zone
 }
 
-resource "aws_route53_record" "bankapi_app" { # Renamed resource
-    zone_id = data.aws_route53_zone.r53_zone.zone_id
-    name    = "bankapi.${var.domain_name}"
-    type    = "A"
-
-    alias {
-      name                   = var.nginx_lb_dns_name
-      zone_id                = var.nginx_lb_hosted_zone_id
-      evaluate_target_health = true
-    }
+resource "aws_route53_record" "bank_cname" {
+  # Reference the zone_id from the data source
+  zone_id = data.aws_route53_zone.existing_r53_zone.zone_id
+  name    = "bank.${var.domain-name}"
+  type    = "CNAME"
+  ttl     = 300
+  records = [var.nginx_lb_ip]
 }
 
-resource "aws_route53_record" "argocd_app" { # Renamed resource
-    zone_id = data.aws_route53_zone.r53_zone.zone_id
-    name    = "argocd.${var.domain_name}"
-    type    = "A"
-
-    alias {
-      name                   = var.nginx_lb_dns_name
-      zone_id                = var.nginx_lb_hosted_zone_id
-      evaluate_target_health = true
-    }
+resource "aws_route53_record" "bankapi_cname" {
+  # Reference the zone_id from the data source
+  zone_id = data.aws_route53_zone.existing_r53_zone.zone_id
+  name    = "bankapi.${var.domain-name}"
+  type    = "CNAME"
+  ttl     = 300
+  records = [var.nginx_lb_ip]
 }
+
+resource "aws_route53_record" "argocd_cname" {
+  # Reference the zone_id from the data source
+  zone_id = data.aws_route53_zone.existing_r53_zone.zone_id
+  name    = "argocd.${var.domain-name}"
+  type    = "CNAME"
+  ttl     = 300
+  records = [var.nginx_lb_ip]
+}
+
+# # modules/dns/main.tf (Updated for ALIAS Records)
+
+# resource "aws_route53_record" "bank_app" { # Renamed resource for clarity (optional, but good practice)
+#     zone_id = data.aws_route53_zone.r53_zone.zone_id
+#     name    = "bank.${var.domain_name}"
+#     type    = "A" # <--- Changed from "CNAME" to "A" (for ALIAS)
+
+#     alias {
+#       name                   = var.nginx_lb_dns_name       # <--- New variable for LB DNS Name
+#       zone_id                = var.nginx_lb_hosted_zone_id # <--- New variable for LB Hosted Zone ID
+#       evaluate_target_health = true                        # Recommended for health checks
+#     }
+#     # Removed 'ttl' and 'records' because they are not used with 'alias' blocks
+# }
+
+# resource "aws_route53_record" "bankapi_app" { # Renamed resource
+#     zone_id = data.aws_route53_zone.r53_zone.zone_id
+#     name    = "bankapi.${var.domain_name}"
+#     type    = "A"
+
+#     alias {
+#       name                   = var.nginx_lb_dns_name
+#       zone_id                = var.nginx_lb_hosted_zone_id
+#       evaluate_target_health = true
+#     }
+# }
+
+# resource "aws_route53_record" "argocd_app" { # Renamed resource
+#     zone_id = data.aws_route53_zone.r53_zone.zone_id
+#     name    = "argocd.${var.domain_name}"
+#     type    = "A"
+
+#     alias {
+#       name                   = var.nginx_lb_dns_name
+#       zone_id                = var.nginx_lb_hosted_zone_id
+#       evaluate_target_health = true
+#     }
+# }
 
 
 

@@ -12,9 +12,9 @@ spec:
   tls:
   - hosts:
     - argocd.cloudwitches.online
-    secretName: argocd-cloudwitches-online
+    secretName: argocd-miniclouddevops-online
   rules:
-  - host: argocd.cloudwitches.online
+  - host: argocd.miniclouddevops.online
     http:
       paths:
       - path: /

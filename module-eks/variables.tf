@@ -93,5 +93,14 @@ variable "repository_name" {
   
 }
 
-variable "domain-name" {}
-variable "email" {}
+variable "domain-name" {
+  description = "Domain name to be created"
+  type        = string
+  default     = "miniclouddevop.online"
+}
+
+variable "email" {
+  description = "Email address for notifications"
+  type        = string
+  default     = "bchimamanda@gmail.com"
+}
